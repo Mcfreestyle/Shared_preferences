@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sesion9/preferences/preferences.dart';
-import 'package:sesion9/screens/index.dart';
+import 'package:sesion9/routes/route.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -64,30 +64,21 @@ class MyDrawer extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text('Home'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home()),
-              );
+              Navigator.pushReplacementNamed(context, MyRoutes.rHOME);
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configuration'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Config()),
-              );
+              Navigator.pushReplacementNamed(context, MyRoutes.rSETTINGS);
             },
           ),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text('Profile'),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Profile()),
-              );
+              Navigator.pushReplacementNamed(context, MyRoutes.rPROFILE);
             },
           ),
         ],
