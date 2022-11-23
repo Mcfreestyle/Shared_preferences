@@ -9,6 +9,7 @@ class Preferences {
   static String _city = '';
   static String _country = '';
   static int _gender = 1;
+  static bool _theme = false;
 
   static Future init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -74,5 +75,15 @@ class Preferences {
   static set gender(int gender) {
     _gender = gender;
     _prefs.setInt('gender', gender);
+  }
+
+  //THEME
+  static bool get theme {
+    return _prefs.getBool('theme') ?? _theme;
+  }
+
+  static set theme(bool value) {
+    _theme = value;
+    _prefs.setBool('theme', value);
   }
 }
