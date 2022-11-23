@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sesion9/widgets/index.dart';
 import 'package:sesion9/preferences/preferences.dart';
+import 'package:sesion9/providers/provider_theme.dart';
 
 class Config extends StatefulWidget {
   const Config({super.key});
@@ -10,13 +12,39 @@ class Config extends StatefulWidget {
 }
 
 class _ConfigState extends State<Config> {
+  final imgController = TextEditingController(text: Preferences.img);
+  final nameController = TextEditingController(text: Preferences.name);
+  final lastNameController = TextEditingController(text: Preferences.lastName);
+  final cityController = TextEditingController(text: Preferences.city);
+  final countryController = TextEditingController(text: Preferences.country);
+
   @override
   Widget build(BuildContext context) {
+    save() {
+      Preferences.img = imgController.text;
+      Preferences.name = nameController.text;
+      Preferences.lastName = lastNameController.text;
+      Preferences.city = cityController.text;
+      Preferences.country = countryController.text;
+      setState(() {});
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Configuration'),
-        centerTitle: true,
-      ),
+          title: const Text('Configuration'),
+          centerTitle: true,
+          actions: [
+            Switch.adaptive(
+              value: Preferences.theme,
+              onChanged: (value) {
+                Preferences.theme = value;
+                final themeP =
+                    Provider.of<ProviderTheme>(context, listen: false);
+                value ? themeP.setDark() : themeP.setLight();
+                setState(() {});
+              },
+            )
+          ]),
       drawer: const MyDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -24,49 +52,34 @@ class _ConfigState extends State<Config> {
           child: Column(
             children: [
               MyTextField(
-                initialValue: Preferences.img,
+                controller: imgController,
                 keyboardType: TextInputType.text,
                 hintText: 'Imagen',
                 prefixIcon: const Icon(Icons.photo),
-                onChanged: (value) {
-                  Preferences.img = value;
-                },
               ),
               MyTextField(
-                initialValue: Preferences.name,
+                controller: nameController,
                 keyboardType: TextInputType.name,
                 hintText: 'Nombre',
                 prefixIcon: const Icon(Icons.person),
-                onChanged: (value) {
-                  Preferences.name = value;
-                },
               ),
               MyTextField(
-                initialValue: Preferences.lastName,
+                controller: lastNameController,
                 keyboardType: TextInputType.name,
                 hintText: 'Apellido',
                 prefixIcon: const Icon(Icons.person),
-                onChanged: (value) {
-                  Preferences.lastName = value;
-                },
               ),
               MyTextField(
-                initialValue: Preferences.city,
+                controller: cityController,
                 keyboardType: TextInputType.name,
                 hintText: 'Ciudad',
                 prefixIcon: const Icon(Icons.location_city),
-                onChanged: (value) {
-                  Preferences.city = value;
-                },
               ),
               MyTextField(
-                initialValue: Preferences.country,
+                controller: countryController,
                 keyboardType: TextInputType.name,
                 hintText: 'Pais',
                 prefixIcon: const Icon(Icons.location_on),
-                onChanged: (value) {
-                  Preferences.country = value;
-                },
               ),
               RadioListTile(
                 activeColor: Colors.green,
@@ -88,6 +101,23 @@ class _ConfigState extends State<Config> {
                   setState(() {});
                 },
               ),
+              SizedBox(
+                height: 50,
+                width: 200,
+                child: MaterialButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.green,
+                    child: const Text(
+                      'Guardar',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () {
+                      save();
+                      setState(() {});
+                    }),
+              )
             ],
           ),
         ),
